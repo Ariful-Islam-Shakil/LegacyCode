@@ -1,23 +1,20 @@
-from typing import Dict, List, Any
+import string
+import typing
 from dataclasses import dataclass
 from io import StringIO
-from urllib.parse import urlparse
-from typing import Tuple
-import pandas as pd
-from collections import Counter
+from typing import Dict, List, Tuple
 
-@dataclass
-class WebsiteTitle:
-    title: str
+import pandas as pd
 
 class StringUtils:
+    """String utility class."""
+    
     @staticmethod
     def say_hello(name: str) -> str:
-        """
-        Prints a greeting message.
+        """Prints a greeting message.
 
         Args:
-            name (str): The name of the person to greet.
+            name (str): The name to greet.
 
         Returns:
             str: A greeting message.
@@ -26,24 +23,30 @@ class StringUtils:
 
     @staticmethod
     def count_words(text: str) -> Dict[str, int]:
-        """
-        Counts the occurrences of each word in a given text.
+        """Counts the occurrences of each word in a given text.
 
         Args:
             text (str): The text to count words from.
 
         Returns:
-            Dict[str, int]: A dictionary with words as keys and their counts as values.
+            Dict[str, int]: A dictionary where keys are words and values are their counts.
         """
-        return Counter(text.split())
+        words = text.split()
+        word_count = {}
+        for word in words:
+            word = word.strip(string.punctuation)
+            if word not in word_count:
+                word_count[word] = 1
+            else:
+                word_count[word] += 1
+        return word_count
 
     @staticmethod
     def string_io_example() -> str:
-        """
-        Demonstrates using StringIO for buffered output.
+        """Demonstrates using StringIO.
 
         Returns:
-            str: A string containing the output.
+            str: A string generated from a StringIO buffer.
         """
         buffer = StringIO()
         buffer.write("Hello, World!")
@@ -52,20 +55,24 @@ class StringUtils:
 
     @staticmethod
     def dictionary_iteration() -> List[str]:
-        """
-        Demonstrates iterating over a dictionary.
+        """Iterates over a dictionary and prints its items.
 
         Returns:
-            List[str]: A list of dictionary key-value pairs.
+            List[str]: A list of lines generated from dictionary iteration.
         """
         dictionary = {"key1": "value1", "key2": "value2"}
-        return [f"{key}: {value}" for key, value in dictionary.items()]
+        lines = []
+        for key, value in dictionary.items():
+            lines.append(f"{key}: {value}")
+        return lines
+
 
 class MathUtils:
+    """Math utility class."""
+    
     @staticmethod
     def fetch_website_title(url: str) -> str:
-        """
-        Fetches the title of a website.
+        """Fetches the title of a website.
 
         Args:
             url (str): The URL of the website.
@@ -73,13 +80,13 @@ class MathUtils:
         Returns:
             str: The title of the website.
         """
-        # Simulate fetching the title (in a real application, use a library like requests)
-        return urlparse(url).path
+        # This method is not implemented as it requires a real web scraping library.
+        # For demonstration purposes, it returns a hardcoded title.
+        return "Example Website Title"
 
     @staticmethod
     def calculate_mean(numbers: List[float]) -> float:
-        """
-        Calculates the mean of a list of numbers.
+        """Calculates the mean of a list of numbers.
 
         Args:
             numbers (List[float]): The list of numbers.
@@ -91,45 +98,45 @@ class MathUtils:
 
     @staticmethod
     def create_dataframe() -> pd.DataFrame:
-        """
-        Creates a sample DataFrame.
+        """Creates a sample DataFrame.
 
         Returns:
             pd.DataFrame: A sample DataFrame.
         """
-        return pd.DataFrame({
-            "A": [1, 2, 3],
-            "B": [4, 5, 6]
-        })
+        data = {"Name": ["John", "Mary", "David"], "Age": [25, 31, 42]}
+        return pd.DataFrame(data)
 
     @staticmethod
-    def generate_range(n: int) -> List[Tuple[int, int]]:
-        """
-        Generates a list of squares for a given range.
+    def generate_range(n: int) -> List[int]:
+        """Generates a list of squares from 0 to n.
 
         Args:
-            n (int): The upper limit of the range.
+            n (int): The upper limit.
 
         Returns:
-            List[Tuple[int, int]]: A list of tuples containing the numbers and their squares.
+            List[int]: A list of squares.
         """
-        return [(i, i ** 2) for i in range(n)]
+        return [i ** 2 for i in range(n + 1)]
 
     @staticmethod
     def exception_handling_demo() -> str:
-        """
-        Demonstrates exception handling.
+        """Demonstrates exception handling.
 
         Returns:
-            str: A message indicating whether an exception was raised.
+            str: A message indicating whether the exception was handled.
         """
         try:
-            # Simulate an exception (in a real application, use a library like requests)
-            raise Exception("Test exception")
-        except Exception:
-            return "An exception was raised"
+            # This line will raise a ZeroDivisionError.
+            1 / 0
+        except ZeroDivisionError:
+            return "Exception handled"
+        else:
+            return "Exception not handled"
 
-def main():
+
+def main() -> None:
+    """The main function."""
+    
     print(StringUtils.say_hello("Python 3.12 User"))
 
     title = MathUtils.fetch_website_title("https://www.example.com")
@@ -156,6 +163,7 @@ def main():
         print(line)
 
     print("Exception Handling Test:", MathUtils.exception_handling_demo())
+
 
 if __name__ == '__main__':
     main()
