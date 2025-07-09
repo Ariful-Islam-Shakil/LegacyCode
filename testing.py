@@ -7,7 +7,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 from io import StringIO
-from typing import Dict, List, Union
 
 def fetch_website_title(url: str) -> str:
     """Get website title using requests + BeautifulSoup.
@@ -19,21 +18,21 @@ def fetch_website_title(url: str) -> str:
         str: Website title or 'No Title Found' if not found.
 
     Raises:
-        requests.RequestException: If there's a problem with the request.
+        requests.RequestException: If there's an issue with the request.
     """
     response = requests.get(url)
-    response.raise_for_status()  # Raise an exception for HTTP errors
+    response.raise_for_status()  # Raise an exception for bad status codes
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup.title.string if soup.title else 'No Title Found'
 
-def calculate_mean(arr: List[float]) -> float:
+def calculate_mean(arr: np.ndarray) -> float:
     """Calculate mean using numpy.
 
     Args:
-        arr (List[float]): List of numbers.
+        arr (np.ndarray): Input array.
 
     Returns:
-        float: Mean of the numbers.
+        float: Mean value of the array.
     """
     return np.mean(arr)
 
@@ -41,42 +40,43 @@ def create_dataframe() -> pd.DataFrame:
     """Create pandas DataFrame and check if 'score' column exists.
 
     Returns:
-        pd.DataFrame: DataFrame with 'name' and 'score' columns.
+        pd.DataFrame: DataFrame with 'score' column or an empty DataFrame.
     """
     data = {'name': ['Alice', 'Bob', 'Charlie'], 'score': [85, 90, 95]}
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    return df if 'score' in df.columns else pd.DataFrame()
 
 def count_words(text: str) -> Counter:
     """Count word frequency using collections.Counter.
 
     Args:
-        text (str): Text to count words from.
+        text (str): Input text.
 
     Returns:
-        Counter: Word frequency counter.
+        Counter: Word frequency Counter.
     """
     words = text.lower().split()
     return Counter(words)
 
 def say_hello(name: str) -> str:
-    """Greet someone with a personalized message.
+    """Greet someone using string formatting.
 
     Args:
-        name (str): Name of the person to greet.
+        name (str): Name of the person.
 
     Returns:
         str: Greeting message.
     """
     return f"Hello, {name}!"
 
-def generate_range(n: int) -> List[int]:
+def generate_range(n: int) -> list[int]:
     """Generate squares using a list comprehension.
 
     Args:
-        n (int): Number of squares to generate.
+        n (int): Upper limit for the range.
 
     Returns:
-        List[int]: List of squares.
+        list[int]: List of squares.
     """
     return [i * i for i in range(n)]
 
@@ -88,19 +88,19 @@ def string_io_example() -> str:
     """
     buffer = StringIO()
     buffer.write("This is a string buffer.\n")
-    buffer.write("Works in Python 3.x with StringIO module.\n")
+    buffer.write("Works in Python 3.12 with StringIO module.\n")
     content = buffer.getvalue()
     buffer.close()
     return content
 
-def dictionary_iteration(d: Dict[str, int]) -> List[str]:
+def dictionary_iteration(d: dict[str, int]) -> list[str]:
     """Iterate dictionary with items().
 
     Args:
-        d (Dict[str, int]): Dictionary to iterate.
+        d (dict[str, int]): Input dictionary.
 
     Returns:
-        List[str]: List of key-value pairs as strings.
+        list[str]: List of key-value pairs.
     """
     return [f"{k} => {v}" for k, v in d.items()]
 
@@ -108,7 +108,7 @@ def exception_handling_demo() -> str:
     """Python 3 style exception handling.
 
     Returns:
-        str: Message indicating whether an exception was caught.
+        str: Result of the exception handling test.
     """
     try:
         return 10 / 0
