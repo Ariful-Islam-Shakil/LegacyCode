@@ -1,7 +1,14 @@
+import pytest
+from unittest.mock import patch
 import utils.math_utils as mu
 
-def test_calculate_mean():
-    assert mu.calculate_mean([1, 2, 3]) == 2.0
+@pytest.mark.parametrize("numbers, expected_mean", [
+    ([1, 2, 3], 2.0),
+    ([4, 5, 6], 5.0),
+    ([7, 8, 9], 8.0)
+])
+def test_calculate_mean(numbers, expected_mean):
+    assert mu.calculate_mean(numbers) == expected_mean
 
 def test_create_dataframe():
     df = mu.create_dataframe()
@@ -14,10 +21,12 @@ def test_generate_range():
 def test_exception_handling_demo():
     assert "Caught an error" in mu.exception_handling_demo()
 
-def test_fetch_website_title(monkeypatch):
+@pytest.mark.asyncio
+async def test_fetch_website_title(monkeypatch):
     class MockResponse:
         text = "<html><head><title>Example</title></head></html>"
-    def mock_get(url):
+    @patch('utils.math_utils.requests.get')
+    def mock_get(get):
         return MockResponse()
-    monkeypatch.setattr(mu.requests, "get", mock_get)
+    monkeypatch.setattr(mu, "requests", mock_get)
     assert mu.fetch_website_title("any") == "Example"
