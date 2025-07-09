@@ -1,162 +1,57 @@
-from typing import List, Dict, Optional
-from dataclasses import dataclass
-from datetime import datetime
-import json
-import logging
 import os
-import pathlib
-import re
-import shutil
-import subprocess
 import sys
-import tempfile
-import urllib.request
-import xml.etree.ElementTree as ET
+import logging
+import json
+from typing import Dict, List, Optional
+from pathlib import Path
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@dataclass
-class Package:
-    """Represents a package."""
-    name: str
-    version: str
-    url: str
-
-    def __post_init__(self):
-        """Validate package attributes."""
-        if not self.name or not self.version or not self.url:
-            raise ValueError("Package attributes cannot be empty.")
-
-def download_package(package: Package) -> str:
+def load_config(config_file: Path) -> Dict[str, str]:
     """
-    Downloads a package from the specified URL.
+    Load configuration from a JSON file.
 
     Args:
-        package (Package): The package to download.
+        config_file (Path): Path to the configuration file.
 
     Returns:
-        str: The path to the downloaded package.
+        Dict[str, str]: Configuration dictionary.
 
     Raises:
-        ValueError: If the package attributes are invalid.
-        urllib.error.URLError: If the download fails.
+        FileNotFoundError: If the configuration file does not exist.
+        json.JSONDecodeError: If the configuration file is not valid JSON.
     """
-    if not isinstance(package, Package):
-        raise TypeError("Expected a Package instance.")
-
     try:
-        # Create a temporary directory to store the package
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # Download the package
-            response = urllib.request.urlopen(package.url)
-            package_path = os.path.join(temp_dir, package.name)
-            with open(package_path, 'wb') as f:
-                f.write(response.read())
-            return package_path
-    except ValueError as e:
-        logger.error(f"Invalid package attributes: {e}")
-        raise
-    except urllib.error.URLError as e:
-        logger.error(f"Failed to download package: {e}")
-        raise
+        with config_file.open('r') as f:
+            return json.load(f)
+    except FileNotFoundError as e:
+        logger.error(f"Configuration file not found: {e}")
+        sys.exit(1)
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in configuration file: {e}")
+        sys.exit(1)
 
-def extract_package(package_path: str) -> str:
+def get_config(config_file: Path) -> Dict[str, str]:
     """
-    Extracts the package contents.
+    Get the configuration from the specified file.
 
     Args:
-        package_path (str): The path to the package.
+        config_file (Path): Path to the configuration file.
 
     Returns:
-        str: The path to the extracted package.
-
-    Raises:
-        ValueError: If the package path is invalid.
+        Dict[str, str]: Configuration dictionary.
     """
-    if not isinstance(package_path, str):
-        raise TypeError("Expected a string.")
+    return load_config(config_file)
 
-    try:
-        # Create a temporary directory to store the extracted package
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # Extract the package
-            subprocess.run(['tar', '-xvf', package_path], cwd=temp_dir)
-            return temp_dir
-    except ValueError as e:
-        logger.error(f"Invalid package path: {e}")
-        raise
-
-def install_package(package_path: str) -> None:
+def main() -> None:
     """
-    Installs the package.
-
-    Args:
-        package_path (str): The path to the package.
-
-    Raises:
-        ValueError: If the package path is invalid.
+    Main entry point of the script.
     """
-    if not isinstance(package_path, str):
-        raise TypeError("Expected a string.")
-
-    try:
-        # Install the package
-        subprocess.run(['sudo', 'dpkg', '-i', package_path], check=True)
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Failed to install package: {e}")
-        raise
-
-def get_package_info(package_path: str) -> Dict[str, str]:
-    """
-    Retrieves the package information.
-
-    Args:
-        package_path (str): The path to the package.
-
-    Returns:
-        Dict[str, str]: The package information.
-
-    Raises:
-        ValueError: If the package path is invalid.
-    """
-    if not isinstance(package_path, str):
-        raise TypeError("Expected a string.")
-
-    try:
-        # Parse the package metadata
-        with open(os.path.join(package_path, 'META-INF', 'MANIFEST.MF')) as f:
-            manifest = f.read()
-        root = ET.fromstring(manifest)
-        package_info = {
-            'name': root.find('Name').text,
-            'version': root.find('Version').text,
-            'url': root.find('URL').text
-        }
-        return package_info
-    except ValueError as e:
-        logger.error(f"Invalid package path: {e}")
-        raise
-
-def main():
-    # Define the package to download
-    package = Package('example', '1.0', 'https://example.com/package')
-
-    # Download the package
-    package_path = download_package(package)
-
-    # Extract the package
-    extracted_path = extract_package(package_path)
-
-    # Install the package
-    install_package(extracted_path)
-
-    # Get the package information
-    package_info = get_package_info(extracted_path)
-
-    # Print the package information
-    print(json.dumps(package_info, indent=4))
+    config_file = Path('config.json')
+    config = get_config(config_file)
+    logger.info(f"Loaded configuration: {config}")
 
 if __name__ == '__main__':
     main()
