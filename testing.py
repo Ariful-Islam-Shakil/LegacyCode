@@ -7,29 +7,28 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 from io import StringIO
-from typing import Dict, List, Tuple
 
 def fetch_website_title(url: str) -> str:
     """Get website title using requests + BeautifulSoup.
 
     Args:
-        url (str): URL of the website to fetch title from.
+        url (str): URL of the website.
 
     Returns:
-        str: Website title if found, 'No Title Found' otherwise.
+        str: Website title or 'No Title Found' if not found.
     """
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup.title.string if soup.title else 'No Title Found'
 
-def calculate_mean(arr: List[float]) -> float:
+def calculate_mean(arr: np.ndarray) -> float:
     """Calculate mean using numpy.
 
     Args:
-        arr (List[float]): List of numbers to calculate mean from.
+        arr (np.ndarray): Input array.
 
     Returns:
-        float: Mean value of the input list.
+        float: Mean value of the array.
     """
     return np.mean(arr)
 
@@ -37,7 +36,7 @@ def create_dataframe() -> pd.DataFrame:
     """Create pandas DataFrame and check if 'score' column exists.
 
     Returns:
-        pd.DataFrame: DataFrame with 'name' and 'score' columns.
+        pd.DataFrame: DataFrame with 'score' column or an empty DataFrame.
     """
     data = {'name': ['Alice', 'Bob', 'Charlie'], 'score': [85, 90, 95]}
     df = pd.DataFrame(data)
@@ -45,37 +44,37 @@ def create_dataframe() -> pd.DataFrame:
         return df
     return pd.DataFrame()
 
-def count_words(text: str) -> Dict[str, int]:
+def count_words(text: str) -> Counter:
     """Count word frequency using collections.Counter.
 
     Args:
-        text (str): Text to count word frequency from.
+        text (str): Input text.
 
     Returns:
-        Dict[str, int]: Dictionary with word frequencies.
+        Counter: Word frequency counter.
     """
     words = text.lower().split()
     return Counter(words)
 
 def say_hello(name: str) -> str:
-    """Greet someone with a personalized message.
+    """Greet the user.
 
     Args:
-        name (str): Name of the person to greet.
+        name (str): User's name.
 
     Returns:
         str: Greeting message.
     """
     return f"Hello, {name}!"
 
-def generate_range(n: int) -> List[int]:
-    """Generate squares using list comprehension.
+def generate_range(n: int) -> list[int]:
+    """Generate squares up to n.
 
     Args:
-        n (int): Upper limit for generating squares.
+        n (int): Upper limit.
 
     Returns:
-        List[int]: List of squares from 0 to n-1.
+        list[int]: List of squares.
     """
     return [i * i for i in range(n)]
 
@@ -83,7 +82,7 @@ def string_io_example() -> str:
     """StringIO example for string buffer.
 
     Returns:
-        str: Content of the string buffer.
+        str: String buffer content.
     """
     buffer = StringIO()
     buffer.write("This is a string buffer.\n")
@@ -92,22 +91,22 @@ def string_io_example() -> str:
     buffer.close()
     return content
 
-def dictionary_iteration(d: Dict[str, int]) -> List[str]:
-    """Iterate dictionary with items() method.
+def dictionary_iteration(d: dict[str, int]) -> list[str]:
+    """Iterate dictionary.
 
     Args:
-        d (Dict[str, int]): Dictionary to iterate over.
+        d (dict[str, int]): Input dictionary.
 
     Returns:
-        List[str]: List of key-value pairs as strings.
+        list[str]: List of key-value pairs.
     """
     return [f"{k} => {v}" for k, v in d.items()]
 
 def exception_handling_demo() -> str:
-    """Demonstrate exception handling with try-except block.
+    """Demonstrate exception handling.
 
     Returns:
-        str: Error message if division by zero occurs.
+        str: Error message or result.
     """
     try:
         return 10 / 0
@@ -116,7 +115,8 @@ def exception_handling_demo() -> str:
 
 # main.py
 
-def main():
+def main() -> None:
+    """Main function."""
     print(say_hello("Python 3.12 User"))
 
     title = fetch_website_title("https://www.example.com")
@@ -134,7 +134,7 @@ def main():
     text = "Python is fun and Python is powerful"
     word_count = count_words(text)
     print("Word Counts:")
-    for word, count in word_count.items():
+    for word, count in word_count.items():  # Python 3 style dictionary iteration
         print(f"{word}: {count}")
 
     print(f"Generated Range Squares: {generate_range(5)}")
