@@ -2,7 +2,8 @@ from tabulate import tabulate  # External package, install with: pip install tab
 from typing import List, Tuple
 
 def add(a: float, b: float) -> float:
-    """Adds two numbers.
+    """
+    Adds two numbers.
 
     Args:
         a (float): The first number.
@@ -17,14 +18,15 @@ def add(a: float, b: float) -> float:
     return a + b
 
 def subtract(a: float, b: float) -> float:
-    """Subtracts the second number from the first.
+    """
+    Subtracts the second number from the first.
 
     Args:
         a (float): The first number.
         b (float): The second number.
 
     Returns:
-        float: The difference between a and b.
+        float: The difference of a and b.
 
     Raises:
         TypeError: If a or b is not a number.
@@ -32,7 +34,8 @@ def subtract(a: float, b: float) -> float:
     return a - b
 
 def multiply(a: float, b: float) -> float:
-    """Multiplies two numbers.
+    """
+    Multiplies two numbers.
 
     Args:
         a (float): The first number.
@@ -47,7 +50,8 @@ def multiply(a: float, b: float) -> float:
     return a * b
 
 def divide(a: float, b: float) -> float:
-    """Divides the first number by the second.
+    """
+    Divides the first number by the second.
 
     Args:
         a (float): The dividend.
@@ -57,31 +61,40 @@ def divide(a: float, b: float) -> float:
         float: The quotient of a and b.
 
     Raises:
-        ValueError: If b is zero.
+        ValueError: If the divisor is zero.
         TypeError: If a or b is not a number.
     """
     if b == 0:
         raise ValueError("Cannot divide by zero!")
-    return a / b  # Python 3 ensures float division
+    return a / b
 
 def display_results_as_table(a: float, b: float) -> None:
-    """Displays the results of arithmetic operations as a table.
+    """
+    Displays the results of arithmetic operations as a table.
 
     Args:
         a (float): The first number.
         b (float): The second number.
+
+    Returns:
+        None
     """
-    results: List[List[str | float]] = [
+    results: List[List[str]] = [
         ["Operation", "Result"],
-        ["Addition", add(a, b)],
-        ["Subtraction", subtract(a, b)],
-        ["Multiplication", multiply(a, b)],
-        ["Division", divide(a, b)]
+        ["Addition", str(add(a, b))],
+        ["Subtraction", str(subtract(a, b))],
+        ["Multiplication", str(multiply(a, b))],
+        ["Division", str(divide(a, b))]
     ]
     print(tabulate(results, headers="firstrow", tablefmt="grid"))
 
 def main() -> None:
-    """Runs the program."""
+    """
+    The main function.
+
+    Returns:
+        None
+    """
     a: float = 10
     b: float = 5
     print(f"Performing calculations on {a} and {b}")
@@ -92,6 +105,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
-    # We can edit every file also
-    
