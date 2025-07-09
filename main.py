@@ -1,3 +1,5 @@
+import string
+import math
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
 from io import StringIO
@@ -5,7 +7,11 @@ from urllib.parse import urlparse
 from typing import Optional
 
 import pandas as pd
-from scipy import stats
+import numpy as np
+
+@dataclass
+class WebsiteTitle:
+    title: str
 
 class StringUtils:
     @staticmethod
@@ -14,23 +20,23 @@ class StringUtils:
         Prints a greeting message.
 
         Args:
-            name (str): The name of the person to greet.
+            name (str): The name to be used in the greeting.
 
         Returns:
-            str: A greeting message.
+            str: The greeting message.
         """
         return f"Hello, {name}!"
 
     @staticmethod
     def count_words(text: str) -> Dict[str, int]:
         """
-        Counts the occurrences of each word in a given text.
+        Counts the occurrences of each word in the given text.
 
         Args:
-            text (str): The text to count words from.
+            text (str): The text to be analyzed.
 
         Returns:
-            Dict[str, int]: A dictionary with words as keys and their counts as values.
+            Dict[str, int]: A dictionary where the keys are the words and the values are their respective counts.
         """
         words = text.split()
         word_count = {}
@@ -48,11 +54,10 @@ class StringUtils:
         Demonstrates the usage of StringIO.
 
         Returns:
-            str: The contents of the StringIO buffer.
+            str: The output of the StringIO buffer.
         """
         buffer = StringIO()
-        buffer.write("Hello, World!\n")
-        buffer.write("This is a test.\n")
+        buffer.write("Hello, World!")
         buffer.seek(0)
         return buffer.read()
 
@@ -62,10 +67,13 @@ class StringUtils:
         Demonstrates dictionary iteration.
 
         Returns:
-            List[str]: A list of dictionary keys.
+            List[str]: A list of lines from the dictionary.
         """
-        data = {"key1": "value1", "key2": "value2"}
-        return list(data.keys())
+        dictionary = {"key1": "value1", "key2": "value2"}
+        lines = []
+        for key, value in dictionary.items():
+            lines.append(f"{key}: {value}")
+        return lines
 
 class MathUtils:
     @staticmethod
@@ -80,7 +88,7 @@ class MathUtils:
             Optional[str]: The title of the website, or None if it cannot be fetched.
         """
         try:
-            # Simulate a web request
+            # Simulate a website title fetch
             parsed_url = urlparse(url)
             return f"Title of {parsed_url.netloc}"
         except Exception as e:
@@ -97,7 +105,7 @@ class MathUtils:
         Returns:
             float: The mean of the numbers.
         """
-        return stats.tmean(numbers)
+        return np.mean(numbers)
 
     @staticmethod
     def create_dataframe() -> pd.DataFrame:
@@ -107,21 +115,24 @@ class MathUtils:
         Returns:
             pd.DataFrame: The sample DataFrame.
         """
-        data = {"A": [1, 2, 3], "B": [4, 5, 6]}
+        data = {
+            "Name": ["John", "Anna", "Peter"],
+            "Age": [28, 24, 35]
+        }
         return pd.DataFrame(data)
 
     @staticmethod
-    def generate_range(n: int) -> List[Tuple[int, int]]:
+    def generate_range(n: int) -> List[int]:
         """
-        Generates a range of numbers and squares them.
+        Generates a range of numbers.
 
         Args:
             n (int): The number of elements in the range.
 
         Returns:
-            List[Tuple[int, int]]: A list of tuples, where each tuple contains a number and its square.
+            List[int]: The generated range.
         """
-        return [(i, i**2) for i in range(n)]
+        return list(range(n))
 
     @staticmethod
     def exception_handling_demo() -> str:
@@ -133,9 +144,9 @@ class MathUtils:
         """
         try:
             # Simulate an exception
-            raise ValueError("Test exception")
-        except ValueError:
-            return "Exception handled"
+            raise Exception("Test exception")
+        except Exception as e:
+            return f"Exception handled: {str(e)}"
         else:
             return "No exception occurred"
 
@@ -143,10 +154,10 @@ def main():
     print(StringUtils.say_hello("Python 3.12 User"))
 
     title = MathUtils.fetch_website_title("https://www.example.com")
-    print("Website Title:", title)
+    print(f"Website Title: {title}")
 
     mean_val = MathUtils.calculate_mean([5, 15, 25])
-    print("Mean Value:", mean_val)
+    print(f"Mean Value: {mean_val}")
 
     df = MathUtils.create_dataframe()
     print("DataFrame:\n", df)
@@ -157,7 +168,7 @@ def main():
     for word, count in word_count.items():
         print(f"{word}: {count}")
 
-    print("Generated Range Squares:", MathUtils.generate_range(5))
+    print("Generated Range Squares:", [i**2 for i in MathUtils.generate_range(5)])
 
     print("StringIO Buffer Output:\n" + StringUtils.string_io_example())
 
