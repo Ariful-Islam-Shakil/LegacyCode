@@ -14,10 +14,13 @@ def fetch_website_title(url: str) -> str:
         str: The title of the website. If no title is found, returns 'No Title Found'.
 
     Raises:
-        requests.RequestException: If there is a problem with the HTTP request.
+        requests.RequestException: If there's an issue with the HTTP request.
     """
-    response = requests.get(url)
-    response.raise_for_status()  # Raise an exception for HTTP errors
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+    except requests.RequestException as e:
+        raise  # Re-raise the exception
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup.title.string if soup.title else 'No Title Found'
 
@@ -34,6 +37,8 @@ def calculate_mean(arr: np.ndarray) -> float:
     Raises:
         ValueError: If the array is empty.
     """
+    if arr.size == 0:
+        raise ValueError("Array is empty")
     return np.mean(arr)
 
 def create_dataframe() -> pd.DataFrame:
@@ -41,7 +46,7 @@ def create_dataframe() -> pd.DataFrame:
     Creates a sample DataFrame.
 
     Returns:
-        pd.DataFrame: A DataFrame with 'name' and 'score' columns.
+        pd.DataFrame: A DataFrame with sample data.
     """
     data = {'name': ['Alice', 'Bob', 'Charlie'], 'score': [85, 90, 95]}
     return pd.DataFrame(data)
@@ -51,12 +56,12 @@ def generate_range(n: int) -> list[int]:
     Generates a list of squares from 0 to n-1.
 
     Args:
-        n (int): The number of elements in the list.
+        n (int): The upper limit (exclusive).
 
     Returns:
         list[int]: A list of squares.
     """
-    return [i * i for i in range(n)]
+    return [i ** 2 for i in range(n)]
 
 def exception_handling_demo() -> str:
     """
@@ -71,4 +76,4 @@ def exception_handling_demo() -> str:
     try:
         return 10 / 0
     except ZeroDivisionError as e:
-        return f"Caught an error: {e}"
+        return f"Caught an error: {str(e)}"
