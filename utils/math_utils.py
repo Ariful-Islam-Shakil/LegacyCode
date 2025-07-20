@@ -14,13 +14,10 @@ def fetch_website_title(url: str) -> str:
         str: The title of the website. If no title is found, returns 'No Title Found'.
 
     Raises:
-        requests.RequestException: If the request to the website fails.
+        requests.RequestException: If there is a problem with the HTTP request.
     """
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an exception for HTTP errors
-    except requests.RequestException as e:
-        raise
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an exception for HTTP errors
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup.title.string if soup.title else 'No Title Found'
 
@@ -37,8 +34,6 @@ def calculate_mean(arr: np.ndarray) -> float:
     Raises:
         ValueError: If the array is empty.
     """
-    if arr.size == 0:
-        raise ValueError("Array is empty")
     return np.mean(arr)
 
 def create_dataframe() -> pd.DataFrame:
@@ -56,12 +51,12 @@ def generate_range(n: int) -> list[int]:
     Generates a list of squares from 0 to n-1.
 
     Args:
-        n (int): The upper limit (exclusive).
+        n (int): The number of elements in the list.
 
     Returns:
         list[int]: A list of squares.
     """
-    return [i ** 2 for i in range(n)]
+    return [i * i for i in range(n)]
 
 def exception_handling_demo() -> str:
     """
