@@ -1,9 +1,8 @@
-from tabulate import tabulate
+from tabulate import tabulate  # External package, install with: pip install tabulate
 from typing import List, Tuple
 
 def add(a: float, b: float) -> float:
-    """
-    Adds two numbers together.
+    """Adds two numbers.
 
     Args:
         a (float): The first number.
@@ -18,15 +17,14 @@ def add(a: float, b: float) -> float:
     return a + b
 
 def subtract(a: float, b: float) -> float:
-    """
-    Subtracts the second number from the first.
+    """Subtracts two numbers.
 
     Args:
         a (float): The first number.
         b (float): The second number.
 
     Returns:
-        float: The difference between a and b.
+        float: The difference of a and b.
 
     Raises:
         TypeError: If a or b is not a number.
@@ -34,8 +32,7 @@ def subtract(a: float, b: float) -> float:
     return a - b
 
 def multiply(a: float, b: float) -> float:
-    """
-    Multiplies two numbers together.
+    """Multiplies two numbers.
 
     Args:
         a (float): The first number.
@@ -50,8 +47,7 @@ def multiply(a: float, b: float) -> float:
     return a * b
 
 def divide(a: float, b: float) -> float:
-    """
-    Divides the first number by the second.
+    """Divides two numbers.
 
     Args:
         a (float): The dividend.
@@ -66,31 +62,26 @@ def divide(a: float, b: float) -> float:
     """
     if b == 0:
         raise ValueError("Cannot divide by zero!")
-    return a / b  # Python 3.12 performs float division by default
+    return a / b
 
 def display_results_as_table(a: float, b: float) -> None:
-    """
-    Displays the results of various operations as a table.
+    """Displays the results of arithmetic operations as a table.
 
     Args:
         a (float): The first number.
         b (float): The second number.
     """
-    results: List[List[str | float]] = [
+    results: List[List[str]] = [
         ["Operation", "Result"],
-        ["Addition", add(a, b)],
-        ["Subtraction", subtract(a, b)],
-        ["Multiplication", multiply(a, b)],
-        ["Division", divide(a, b)]
+        ["Addition", str(add(a, b))],
+        ["Subtraction", str(subtract(a, b))],
+        ["Multiplication", str(multiply(a, b))],
+        ["Division", str(divide(a, b))]
     ]
     print(tabulate(results, headers="firstrow", tablefmt="grid"))
 
 def main() -> None:
-    """
-    The main function.
-
-    Performs calculations on two numbers and displays the results.
-    """
+    """The main function."""
     a: float = 10
     b: float = 5
     print(f"Performing calculations on {a} and {b}")
