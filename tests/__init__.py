@@ -1,36 +1,30 @@
 import pytest
 from unittest.mock import patch
-from unittest.mock import MagicMock
-from unittest.mock import PropertyMock
-from your_module import YourClass
+from your_module import your_function
 
-@pytest.fixture
-def your_class():
-    return YourClass()
+@pytest.mark.parametrize("input_value, expected_output", [
+    (1, 2),
+    (2, 3),
+    (3, 4),
+])
+def test_your_function(input_value, expected_output):
+    with patch.object(your_function, 'your_dependency') as mock_dependency:
+        mock_dependency.return_value = 1
+        result = your_function(input_value)
+        assert result == expected_output
 
-def test_your_method(your_class):
-    with patch.object(your_class, 'your_method') as mock_method:
-        mock_method.return_value = 'mocked_value'
-        result = your_class.your_method()
-        assert result == 'mocked_value'
-        mock_method.assert_called_once()
+def test_your_function_invalid_input():
+    with pytest.raises(ValueError):
+        your_function('invalid')
 
-def test_your_property(your_class):
-    with patch.object(your_class, 'your_property', new_callable=PropertyMock) as mock_property:
-        mock_property.return_value = 'mocked_value'
-        assert your_class.your_property == 'mocked_value'
-        mock_property.assert_called_once()
+def test_your_function_edge_case():
+    result = your_function(0)
+    assert result == 1
 
-def test_your_method_with_side_effect(your_class):
-    with patch.object(your_class, 'your_method') as mock_method:
-        mock_method.side_effect = Exception('Mocked exception')
-        with pytest.raises(Exception):
-            your_class.your_method()
-        mock_method.assert_called_once()
+def test_your_function_edge_case_zero():
+    result = your_function(0)
+    assert result == 1
 
-def test_your_property_with_side_effect(your_class):
-    with patch.object(your_class, 'your_property', new_callable=PropertyMock) as mock_property:
-        mock_property.side_effect = Exception('Mocked exception')
-        with pytest.raises(Exception):
-            your_class.your_property
-        mock_property.assert_called_once()
+def test_your_function_edge_case_negative():
+    result = your_function(-1)
+    assert result == 1
