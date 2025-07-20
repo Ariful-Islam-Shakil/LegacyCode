@@ -1,6 +1,7 @@
 import pytest
-from unittest.mock import patch
 import utils.math_utils as mu
+import requests
+from unittest.mock import patch, MagicMock
 
 @pytest.mark.parametrize("numbers, expected", [
     ([1, 2, 3], 2.0),
@@ -19,8 +20,11 @@ def test_generate_range():
 def test_exception_handling_demo():
     assert "Caught an error" in mu.exception_handling_demo()
 
-@patch('utils.math_utils.requests.get')
-def test_fetch_website_title(mock_get):
-    mock_response = "<html><head><title>Example</title></head></html>"
-    mock_get.return_value.text = mock_response
-    assert mu.fetch_website_title("any") == "Example"
+@pytest.mark.parametrize("url, expected", [
+    ("any", "Example"),
+])
+def test_fetch_website_title(url, expected, monkeypatch):
+    class MockResponse:
+        text = "<html><head><title>Example</title></head></html>"
+    with patch.object(requests, "get", return_value=MagicMock(text=MockResponse.text)):
+        assert mu.fetch_website_title(url) == expected
