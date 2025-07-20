@@ -17,26 +17,3 @@ def test_dictionary_iteration():
     output = dictionary_iteration()
     assert "a => 1" in output
     assert "b => 2" in output
-
-# utils/string_utils.py
-from io import StringIO
-
-def say_hello(name: str) -> str:
-    return f"Hello, {name}!"
-
-def count_words(input_string: str) -> dict[str, int]:
-    words = input_string.lower().split()
-    return {word: words.count(word) for word in set(words)}
-
-def string_io_example() -> str:
-    buffer = StringIO()
-    buffer.write("This is a string buffer")
-    buffer.seek(0)
-    return buffer.read()
-
-def dictionary_iteration() -> str:
-    data = {"a": 1, "b": 2}
-    output = ""
-    for key, value in data.items():
-        output += f"{key} => {value}\n"
-    return output
