@@ -1,14 +1,15 @@
-from io import StringIO
 from collections import Counter
+from io import StringIO
+from typing import List, Dict, Tuple
 
 def say_hello(name: str) -> str:
-    """Returns a greeting message with the provided name.
+    """Returns a personalized greeting message.
 
     Args:
-        name (str): The name to be used in the greeting.
+        name (str): The name to be included in the greeting.
 
     Returns:
-        str: A greeting message.
+        str: A greeting message with the provided name.
     """
     return f"Hello, {name}!"
 
@@ -25,26 +26,26 @@ def count_words(text: str) -> Counter:
     return Counter(words)
 
 def string_io_example() -> str:
-    """Demonstrates the usage of StringIO for string buffering.
+    """Demonstrates the use of StringIO for string buffering.
 
     Returns:
-        str: The content of the string buffer.
+        str: The contents of the string buffer.
     """
     buffer = StringIO()
     buffer.write("This is a string buffer.\n")
-    buffer.write("Works in Python 3.12 with StringIO module.\n")
+    buffer.write("Works in Python 3.x with StringIO module.\n")
     content = buffer.getvalue()
     buffer.close()
     return content
 
-def dictionary_iteration(d: dict[str, int]) -> list[str]:
+def dictionary_iteration(d: Dict[str, int]) -> List[str]:
     """Iterates over a dictionary and returns a list of key-value pairs.
 
     Args:
-        d (dict[str, int]): The dictionary to be iterated.
+        d (Dict[str, int]): The dictionary to be iterated.
 
     Returns:
-        list[str]: A list of key-value pairs as strings.
+        List[str]: A list of string representations of key-value pairs.
     """
     result = []
     for k, v in d.items():
