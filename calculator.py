@@ -2,8 +2,7 @@ from tabulate import tabulate  # External package, install with: pip install tab
 from typing import List, Tuple
 
 def add(a: float, b: float) -> float:
-    """
-    Adds two numbers.
+    """Adds two numbers.
 
     Args:
         a (float): The first number.
@@ -18,15 +17,14 @@ def add(a: float, b: float) -> float:
     return a + b
 
 def subtract(a: float, b: float) -> float:
-    """
-    Subtracts the second number from the first.
+    """Subtracts the second number from the first.
 
     Args:
         a (float): The first number.
         b (float): The second number.
 
     Returns:
-        float: The difference of a and b.
+        float: The difference between a and b.
 
     Raises:
         TypeError: If a or b is not a number.
@@ -34,8 +32,7 @@ def subtract(a: float, b: float) -> float:
     return a - b
 
 def multiply(a: float, b: float) -> float:
-    """
-    Multiplies two numbers.
+    """Multiplies two numbers.
 
     Args:
         a (float): The first number.
@@ -50,8 +47,7 @@ def multiply(a: float, b: float) -> float:
     return a * b
 
 def divide(a: float, b: float) -> float:
-    """
-    Divides the first number by the second.
+    """Divides the first number by the second.
 
     Args:
         a (float): The dividend.
@@ -62,22 +58,18 @@ def divide(a: float, b: float) -> float:
 
     Raises:
         ValueError: If the divisor is zero.
-        TypeError: If a or b is not a number.
+        TypeError: If the dividend or divisor is not a number.
     """
     if b == 0:
         raise ValueError("Cannot divide by zero!")
-    return a / b
+    return a / b  # Python 3 ensures float division
 
 def display_results_as_table(a: float, b: float) -> None:
-    """
-    Displays the results of arithmetic operations as a table.
+    """Displays the results of basic arithmetic operations as a table.
 
     Args:
         a (float): The first number.
         b (float): The second number.
-
-    Returns:
-        None
     """
     results: List[List[str]] = [
         ["Operation", "Result"],
@@ -89,12 +81,7 @@ def display_results_as_table(a: float, b: float) -> None:
     print(tabulate(results, headers="firstrow", tablefmt="grid"))
 
 def main() -> None:
-    """
-    The main function.
-
-    Returns:
-        None
-    """
+    """Runs the program with default values."""
     a: float = 10
     b: float = 5
     print(f"Performing calculations on {a} and {b}")
