@@ -1,57 +1,110 @@
-import os
-import sys
-import logging
+from typing import List, Dict, Optional
+from dataclasses import dataclass
+from enum import Enum
 import json
-from typing import Dict, List, Optional
+import logging
 from pathlib import Path
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+import uuid
 
 # Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def load_config(config_file: Path) -> Dict[str, str]:
+class BuildStatus(Enum):
+    """Enum for build status."""
+    SUCCESS = 0
+    FAILURE = 1
+    SKIPPED = 2
+
+@dataclass
+class BuildResult:
+    """Dataclass for build result."""
+    status: BuildStatus
+    output: str
+
+def get_build_status(output: str) -> BuildStatus:
     """
-    Load configuration from a JSON file.
+    Determine the build status based on the output.
 
     Args:
-        config_file (Path): Path to the configuration file.
+        output (str): The build output.
 
     Returns:
-        Dict[str, str]: Configuration dictionary.
+        BuildStatus: The build status.
 
     Raises:
-        FileNotFoundError: If the configuration file does not exist.
-        json.JSONDecodeError: If the configuration file is not valid JSON.
+        ValueError: If the output is invalid.
     """
-    try:
-        with config_file.open('r') as f:
-            return json.load(f)
-    except FileNotFoundError as e:
-        logger.error(f"Configuration file not found: {e}")
-        sys.exit(1)
-    except json.JSONDecodeError as e:
-        logger.error(f"Invalid JSON in configuration file: {e}")
-        sys.exit(1)
+    if re.search(r'Build Succeeded', output):
+        return BuildStatus.SUCCESS
+    elif re.search(r'Build Failed', output):
+        return BuildStatus.FAILURE
+    else:
+        raise ValueError('Invalid build output')
 
-def get_config(config_file: Path) -> Dict[str, str]:
+def run_command(command: str) -> BuildResult:
     """
-    Get the configuration from the specified file.
+    Run a command and capture the output.
 
     Args:
-        config_file (Path): Path to the configuration file.
+        command (str): The command to run.
 
     Returns:
-        Dict[str, str]: Configuration dictionary.
+        BuildResult: The build result.
+
+    Raises:
+        subprocess.CalledProcessError: If the command fails.
     """
-    return load_config(config_file)
+    try:
+        output = subprocess.check_output(command, shell=True).decode('utf-8')
+        status = get_build_status(output)
+        return BuildResult(status=status, output=output)
+    except subprocess.CalledProcessError as e:
+        logging.error(f'Command failed with return code {e.returncode}')
+        return BuildResult(status=BuildStatus.FAILURE, output=f'Command failed with return code {e.returncode}')
+
+def build_project(project_path: Path) -> BuildResult:
+    """
+    Build a project.
+
+    Args:
+        project_path (Path): The project path.
+
+    Returns:
+        BuildResult: The build result.
+
+    Raises:
+        FileNotFoundError: If the project path does not exist.
+    """
+    if not project_path.exists():
+        raise FileNotFoundError(f'Project path {project_path} does not exist')
+    command = f'cmake -B {project_path / "build"} -S {project_path}'
+    return run_command(command)
+
+def clean_project(project_path: Path) -> None:
+    """
+    Clean a project.
+
+    Args:
+        project_path (Path): The project path.
+    """
+    if project_path.exists():
+        shutil.rmtree(project_path)
 
 def main() -> None:
     """
-    Main entry point of the script.
+    Main function.
     """
-    config_file = Path('config.json')
-    config = get_config(config_file)
-    logger.info(f"Loaded configuration: {config}")
+    project_path = Path(sys.argv[1])
+    clean_project(project_path)
+    build_result = build_project(project_path)
+    logging.info(f'Build result: {build_result.status}')
 
 if __name__ == '__main__':
     main()
