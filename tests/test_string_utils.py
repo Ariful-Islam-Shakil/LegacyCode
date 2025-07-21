@@ -20,21 +20,13 @@ def test_dictionary_iteration():
 
 # utils/string_utils.py
 from io import StringIO
-from typing import Dict
 
 def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 
-def count_words(input_string: str) -> Dict[str, int]:
-    words = input_string.split()
-    word_count: Dict[str, int] = {}
-    for word in words:
-        word = word.lower()
-        if word in word_count:
-            word_count[word] += 1
-        else:
-            word_count[word] = 1
-    return word_count
+def count_words(text: str) -> dict[str, int]:
+    words = text.lower().split()
+    return {word: words.count(word) for word in set(words)}
 
 def string_io_example() -> str:
     buffer = StringIO()
@@ -43,8 +35,8 @@ def string_io_example() -> str:
     return buffer.read()
 
 def dictionary_iteration() -> str:
-    data: Dict[str, int] = {"a": 1, "b": 2}
+    dictionary = {"a": 1, "b": 2}
     output = ""
-    for key, value in data.items():
+    for key, value in dictionary.items():
         output += f"{key} => {value}\n"
     return output
