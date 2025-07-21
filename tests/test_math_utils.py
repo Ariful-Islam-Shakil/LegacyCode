@@ -1,41 +1,29 @@
 import pytest
 import utils.math_utils as mu
-import requests
+from unittest.mock import patch
+from requests import get
 
-@pytest.mark.parametrize("numbers, expected", [
+@pytest.mark.parametrize("numbers, expected_mean", [
     ([1, 2, 3], 2.0),
+    ([5, 5, 5], 5.0),
 ])
-def test_calculate_mean(numbers, expected):
-    assert mu.calculate_mean(numbers) == expected
+def test_calculate_mean(numbers, expected_mean):
+    assert mu.calculate_mean(numbers) == expected_mean
 
-@pytest.fixture
-def dataframe():
-    return mu.create_dataframe()
+def test_create_dataframe():
+    df = mu.create_dataframe()
+    assert 'score' in df.columns
+    assert len(df) == 3
 
-def test_create_dataframe(dataframe):
-    assert 'score' in dataframe.columns
-    assert len(dataframe) == 3
-
-@pytest.mark.parametrize("n, expected", [
-    (3, [0, 1, 4]),
-])
-def test_generate_range(n, expected):
-    assert mu.generate_range(n) == expected
+def test_generate_range():
+    assert mu.generate_range(3) == [0, 1, 4]
 
 def test_exception_handling_demo():
     assert "Caught an error" in mu.exception_handling_demo()
 
-@pytest.fixture
-def mock_response():
-    return requests.Response()
-    mock_response._content = "<html><head><title>Example</title></head></html>".encode()
-
-@pytest.fixture
-def monkeypatched_get(monkeypatch):
-    def mock_get(url):
-        return mock_response()
-    monkeypatch.setattr(requests.api, "requests", lambda *args, **kwargs: mock_response())
-    monkeypatch.setattr(requests, "get", mock_get)
-
-def test_fetch_website_title(monkeypatched_get):
+@patch('utils.math_utils.requests.get')
+def test_fetch_website_title(mock_get):
+    class MockResponse:
+        text = "<html><head><title>Example</title></head></html>"
+    mock_get.return_value = MockResponse()
     assert mu.fetch_website_title("any") == "Example"
