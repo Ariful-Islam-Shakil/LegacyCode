@@ -1,68 +1,23 @@
-from tabulate import tabulate  # External package, install with: pip install tabulate
-from typing import List, Tuple
+from tabulate import tabulate
 
 def add(a: float, b: float) -> float:
-    """
-    Adds two numbers together.
-
-    Args:
-        a (float): The first number.
-        b (float): The second number.
-
-    Returns:
-        float: The sum of a and b.
-
-    Raises:
-        TypeError: If a or b is not a number.
-    """
+    """Returns the sum of two numbers."""
     return a + b
 
 def subtract(a: float, b: float) -> float:
-    """
-    Subtracts the second number from the first.
-
-    Args:
-        a (float): The first number.
-        b (float): The second number.
-
-    Returns:
-        float: The difference between a and b.
-
-    Raises:
-        TypeError: If a or b is not a number.
-    """
+    """Returns the difference of two numbers."""
     return a - b
 
 def multiply(a: float, b: float) -> float:
-    """
-    Multiplies two numbers together.
-
-    Args:
-        a (float): The first number.
-        b (float): The second number.
-
-    Returns:
-        float: The product of a and b.
-
-    Raises:
-        TypeError: If a or b is not a number.
-    """
+    """Returns the product of two numbers."""
     return a * b
 
 def divide(a: float, b: float) -> float:
     """
-    Divides the first number by the second.
-
-    Args:
-        a (float): The dividend.
-        b (float): The divisor.
-
-    Returns:
-        float: The quotient of a and b.
+    Returns the quotient of two numbers.
 
     Raises:
         ValueError: If the divisor is zero.
-        TypeError: If the dividend or divisor is not a number.
     """
     if b == 0:
         raise ValueError("Cannot divide by zero!")
@@ -70,29 +25,25 @@ def divide(a: float, b: float) -> float:
 
 def display_results_as_table(a: float, b: float) -> None:
     """
-    Displays the results of various operations on two numbers as a table.
+    Displays the results of basic arithmetic operations as a table.
 
     Args:
-        a (float): The first number.
-        b (float): The second number.
+        a (float): The first operand.
+        b (float): The second operand.
     """
-    results: List[List[str]] = [
+    results = [
         ["Operation", "Result"],
-        ["Addition", str(add(a, b))],
-        ["Subtraction", str(subtract(a, b))],
-        ["Multiplication", str(multiply(a, b))],
-        ["Division", str(divide(a, b))]
+        ["Addition", add(a, b)],
+        ["Subtraction", subtract(a, b)],
+        ["Multiplication", multiply(a, b)],
+        ["Division", divide(a, b)]
     ]
     print(tabulate(results, headers="firstrow", tablefmt="grid"))
 
 def main() -> None:
-    """
-    The main function.
-
-    Performs calculations on two numbers and displays the results as a table.
-    """
-    a: float = 10
-    b: float = 5
+    """Performs calculations on two numbers and displays the results."""
+    a = 10
+    b = 5
     print(f"Performing calculations on {a} and {b}")
     try:
         display_results_as_table(a, b)
