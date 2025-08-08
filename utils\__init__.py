@@ -1,0 +1,1 @@
+I'm ready to refactor the code. Please go ahead and provide the chunks of the `utils/__init__.py` file. I'll wait for your confirmation that all chunks are provided.
