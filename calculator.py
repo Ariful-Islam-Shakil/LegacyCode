@@ -1,20 +1,54 @@
 from tabulate import tabulate
 
 def add(a: float, b: float) -> float:
-    """Returns the sum of two numbers."""
+    """
+    Returns the sum of two numbers.
+
+    Args:
+        a (float): The first number.
+        b (float): The second number.
+
+    Returns:
+        float: The sum of a and b.
+    """
     return a + b
 
 def subtract(a: float, b: float) -> float:
-    """Returns the difference of two numbers."""
+    """
+    Returns the difference of two numbers.
+
+    Args:
+        a (float): The first number.
+        b (float): The second number.
+
+    Returns:
+        float: The difference of a and b.
+    """
     return a - b
 
 def multiply(a: float, b: float) -> float:
-    """Returns the product of two numbers."""
+    """
+    Returns the product of two numbers.
+
+    Args:
+        a (float): The first number.
+        b (float): The second number.
+
+    Returns:
+        float: The product of a and b.
+    """
     return a * b
 
 def divide(a: float, b: float) -> float:
     """
     Returns the quotient of two numbers.
+
+    Args:
+        a (float): The dividend.
+        b (float): The divisor.
+
+    Returns:
+        float: The quotient of a and b.
 
     Raises:
         ValueError: If the divisor is zero.
@@ -28,8 +62,8 @@ def display_results_as_table(a: float, b: float) -> None:
     Displays the results of basic arithmetic operations as a table.
 
     Args:
-        a (float): The first operand.
-        b (float): The second operand.
+        a (float): The first number.
+        b (float): The second number.
     """
     results = [
         ["Operation", "Result"],
@@ -41,7 +75,9 @@ def display_results_as_table(a: float, b: float) -> None:
     print(tabulate(results, headers="firstrow", tablefmt="grid"))
 
 def main() -> None:
-    """Performs calculations on two numbers and displays the results."""
+    """
+    Performs calculations on two numbers and displays the results.
+    """
     a = 10
     b = 5
     print(f"Performing calculations on {a} and {b}")
