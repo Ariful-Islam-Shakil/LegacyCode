@@ -20,12 +20,12 @@ def fetch_website_title(url: str) -> str:
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup.title.string if soup.title else 'No Title Found'
 
-def calculate_mean(arr: list) -> float:
+def calculate_mean(arr: list[float]) -> float:
     """
     Calculate mean using numpy.
 
     Args:
-        arr (list): List of numbers.
+        arr (list[float]): List of numbers.
 
     Returns:
         float: Mean value.
@@ -60,25 +60,25 @@ def count_words(text: str) -> Counter:
 
 def say_hello(name: str) -> str:
     """
-    Greeting message.
+    Greeting using f-string.
 
     Args:
-        name (str): Name.
+        name (str): Name to greet.
 
     Returns:
         str: Greeting message.
     """
     return f"Hello, {name}!"
 
-def generate_range(n: int) -> list:
+def generate_range(n: int) -> list[int]:
     """
-    Generate squares.
+    Generate squares using list comprehension.
 
     Args:
         n (int): Number of squares.
 
     Returns:
-        list: List of squares.
+        list[int]: List of squares.
     """
     return [i * i for i in range(n)]
 
@@ -91,27 +91,30 @@ def string_io_example() -> str:
     """
     buffer = StringIO()
     buffer.write("This is a string buffer.\n")
-    buffer.write("Works in Python 3.\n")
+    buffer.write("Works in Python 3.x with io module.\n")
     content = buffer.getvalue()
     buffer.close()
     return content
 
-def dictionary_iteration() -> list:
+def dictionary_iteration() -> list[str]:
     """
-    Iterate dictionary.
+    Iterate dictionary with items().
 
     Returns:
-        list: List of dictionary items.
+        list[str]: List of dictionary items.
     """
     d = {'a': 1, 'b': 2}
-    return [f"{k} => {v}" for k, v in d.items()]
+    result = []
+    for k, v in d.items():
+        result.append(f"{k} => {v}")
+    return result
 
 def exception_handling_demo() -> str:
     """
     Python 3 style exception handling.
 
     Returns:
-        str: Exception message.
+        str: Error message.
     """
     try:
         return 10 / 0
@@ -119,7 +122,7 @@ def exception_handling_demo() -> str:
         return f"Caught an error: {str(e)}"
 
 def main() -> None:
-    print(say_hello("Python 3.12 User"))
+    print(say_hello("Python3.12 User"))
 
     title = fetch_website_title("https://www.example.com")
     print(f"Website Title: {title}")
