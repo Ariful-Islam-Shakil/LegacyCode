@@ -11,7 +11,7 @@ def fetch_website_title(url: str) -> str:
     Get website title using requests + BeautifulSoup.
 
     Args:
-        url (str): URL of the website.
+        url (str): Website URL.
 
     Returns:
         str: Website title.
@@ -63,7 +63,7 @@ def say_hello(name: str) -> str:
     Greeting using f-string.
 
     Args:
-        name (str): Name to greet.
+        name (str): Name.
 
     Returns:
         str: Greeting message.
@@ -72,7 +72,7 @@ def say_hello(name: str) -> str:
 
 def generate_range(n: int) -> list[int]:
     """
-    Generate squares using list comprehension.
+    Generate squares.
 
     Args:
         n (int): Number of squares.
@@ -91,30 +91,27 @@ def string_io_example() -> str:
     """
     buffer = StringIO()
     buffer.write("This is a string buffer.\n")
-    buffer.write("Works in Python 3.x with io module.\n")
+    buffer.write("Works in Python 3.\n")
     content = buffer.getvalue()
     buffer.close()
     return content
 
 def dictionary_iteration() -> list[str]:
     """
-    Iterate dictionary with items().
+    Iterate dictionary.
 
     Returns:
-        list[str]: List of dictionary items.
+        list[str]: Dictionary iteration output.
     """
     d = {'a': 1, 'b': 2}
-    result = []
-    for k, v in d.items():
-        result.append(f"{k} => {v}")
-    return result
+    return [f"{k} => {v}" for k, v in d.items()]
 
 def exception_handling_demo() -> str:
     """
     Python 3 style exception handling.
 
     Returns:
-        str: Error message.
+        str: Exception handling result.
     """
     try:
         return 10 / 0
@@ -122,7 +119,7 @@ def exception_handling_demo() -> str:
         return f"Caught an error: {str(e)}"
 
 def main() -> None:
-    print(say_hello("Python3.12 User"))
+    print(say_hello("Python 3 User"))
 
     title = fetch_website_title("https://www.example.com")
     print(f"Website Title: {title}")
