@@ -2,6 +2,7 @@ import utils.string_utils as string_utils
 import utils.math_utils as math_utils
 from typing import Dict
 
+
 def main() -> None:
     """Main function to demonstrate utility functions."""
     print(string_utils.say_hello("Python3.12 User"))
@@ -13,7 +14,7 @@ def main() -> None:
     print(f"Mean Value: {mean_val}")
 
     df = math_utils.create_dataframe()
-    print("DataFrame:\n", df)
+    print(f"DataFrame:\n{df}")
 
     text = "Python is fun and Python is powerful"
     word_count: Dict[str, int] = string_utils.count_words(text)
@@ -30,6 +31,7 @@ def main() -> None:
         print(line)
 
     print("Exception Handling Test:", math_utils.exception_handling_demo())
+
 
 if __name__ == '__main__':
     main()
