@@ -1,0 +1,13 @@
+[
+  "[-] Skipped (not .py): .gitignore",
+  "[✓] Refactored: calculator.py",
+  "[✓] Refactored: main.py",
+  "[-] Skipped (not .py): requirements.txt",
+  "[✓] Refactored: testing.py",
+  "[✓] Refactored: tests/__init__.py",
+  "[✓] Refactored: tests/test_math_utils.py",
+  "[✓] Refactored: tests/test_string_utils.py",
+  "[✓] Refactored: utils/__init__.py",
+  "[✓] Refactored: utils/math_utils.py",
+  "[✓] Refactored: utils/string_utils.py"
+]
