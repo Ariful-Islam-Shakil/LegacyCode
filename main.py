@@ -13,7 +13,7 @@ def main() -> None:
     print(f"Mean Value: {mean_val}")
 
     df = math_utils.create_dataframe()
-    print(f"DataFrame:\n{df}")
+    print("DataFrame:\n", df)
 
     text = "Python is fun and Python is powerful"
     word_count: Dict[str, int] = string_utils.count_words(text)
